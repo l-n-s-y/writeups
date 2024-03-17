@@ -1,5 +1,7 @@
 **Category:** Reverse Engineering
+
 **Flags:** 7
+
 **Difficulty:** 7/10
 
 This challenge was an interesting look into PyInstaller internals and forced me to utilise IDA in ways I hadn't thought of before. I had a great time with this one.
@@ -126,8 +128,8 @@ and returning the encoded response.
 After some more reading I found that the response data was being passed to another function that checked the content of the `flag{didyoufindthefile}.log` file (from before) to determine if the binary had been run 10 or more times before returning another flag and the data.
 
 To simplify things for myself, however, and avoid having to re-run the file over and over, I just used `curl` to retrieve what I estimated was the flag encoded in some manner:
-![](images/qut_ctf_final_flag_encoded.png)
 
+![](images/qut_ctf_final_flag_encoded.png)
 
 I felt I recognised the encoding style, so with a little base64 magic, I decoded the final flag:
 ![](images/qut_ctf_funny_pipes.png)
