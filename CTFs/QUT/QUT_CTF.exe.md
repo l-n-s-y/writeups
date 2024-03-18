@@ -26,11 +26,12 @@ After a few more searches I decided my next step would be disassembling the bina
 After opening the file in IDA64 and examining a few of the decompiled functions, however, I realised it wouldn't be that simple. 
 
 The methods I was returned seemed to be performing a lot of complex memory shifts and executing bytes directly from the stack through function pointers in a very unusual way. Some of the logging strings  and 'flag' keywords returned in the previous step hinted at the reason:
+
 ![](images/qut_ctf_die_summary.png)
 
 The PE was packed with PyInstaller.
 
-At the time, I was largely unfamiliar with PyInstaller stub configuration, and the methods to reverse them. I knew the unpacked binary must be hiding somewhere within the .exe, however, and decided to try and find where this pivotal execution occurred.
+At the time, I was largely unfamiliar with PyInstaller stub configuration, and the methods to reverse them. I knew the unpacked binary must be hiding somewhere within the .exe, however, and decided to try and find where the primary execution occurred.
 
 Going back to main(), I went through each of invoked methods looking for anything interesting. While the first three seemed to be boilerplate setups, the fourth was the largest by far and had some interesting strings and API calls:
 
@@ -51,7 +52,7 @@ A nested function containing a call to the CreateProcess() WinAPI. The function 
 
 Using `Get-ProcessList` I determined the PID of the child process and attached IDA to it. After opening the debugger session and rendering a list of strings from memory, things were noticeably different. 
 
-Filtering for "password" returned the prompts from the input prompt!
+Filtering for "password" returned the prompt messages from the input screen!
 
 ![](images/qut_ctf_password_strings.png)
 
@@ -88,7 +89,7 @@ The ValueError complained that the filename it was attempting to write .pyc data
 
 The fix I found for this was to locate the functions responsible for this exception and manually sanitise the filenames before they could be written to or read from.
 
-The Exception traceback warned that the ValueError was originating from a function called \_writePyc which was responsible for taking decompressed .pyc archive data and writing it to externally .pyc files. 
+The Exception traceback warned that the ValueError was originating from a function called \_writePyc which was responsible for taking the decompressed archive data and writing it to disk as new .pyc files.
 
 I added a quick string.replace to exclude to remove any nullbytes contained in a prospective filename:
 
