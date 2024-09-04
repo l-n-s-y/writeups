@@ -122,7 +122,7 @@ Oh... so anything works as long as it's 10 characters long and has a 'w' in the 
 That aside, I was here for the last flag. And after looking around, I figured out why I couldn't see it before.
 ![](images/qut_ctf_connection_func.png)
 
-The program was performing a GET request to an external DNS endpoint: 
+The program was performing a GET request to an external PHP endpoint: 
 `nor.betterwayelectronics.com.au/dfir.php?1337`
 and returning the encoded response. 
 
