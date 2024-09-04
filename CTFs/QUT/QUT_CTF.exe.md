@@ -91,7 +91,7 @@ The fix I found for this was to locate the functions responsible for this except
 
 The Exception traceback warned that the ValueError was originating from a function called \_writePyc which was responsible for taking the decompressed archive data and writing it to disk as new .pyc files.
 
-I added a quick string.replace to exclude to remove any nullbytes contained in a prospective filename:
+I added a quick string.replace to remove any nullbytes contained in a prospective filename:
 
 BEFORE:
 
